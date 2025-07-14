@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create_init_tables" author="MuratYigitMert">
+        <createTable tableName="users">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="books">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+
+        </createTable>
+        <createTable tableName="authors">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="publishers">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="genres">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="loans">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="book_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loan_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="return_date" type="timestamp"/>
+            <column name="is_returned" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+
+        <createTable tableName="loss_records">
+            <column name="id" type="serial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="book_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lost_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+    </changeSet>
+
+    <changeSet id="add_fks_to_tables" author="MuratYigitMert">
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="role_id" constraintName="fk_users_roles"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint
+                baseTableName="loans"
+                baseColumnNames="book_id"
+                constraintName="fk_loans_books"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="loans"
+                baseColumnNames="user_id"
+                constraintName="fk_loans_users"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="loss_records"
+                baseColumnNames="book_id"
+                constraintName="fk_loss_records_books"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="loss_records"
+                baseColumnNames="user_id"
+                constraintName="fk_loss_records_users"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <createTable tableName="book_author">
+            <column name="book_id" type="int"/>
+            <column name="author_id" type="int"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="book_author"
+                baseColumnNames="book_id"
+                constraintName="fk_book_author_book"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="book_author"
+                baseColumnNames="author_id"
+                constraintName="fk_book_author_author"
+                referencedTableName="authors"
+                referencedColumnNames="id"/>
+
+        <createTable tableName="book_genre">
+            <column name="book_id" type="int"/>
+            <column name="genre_id" type="int"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="book_genre"
+                baseColumnNames="book_id"
+                constraintName="fk_book_genre_book"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="book_genre"
+                baseColumnNames="genre_id"
+                constraintName="fk_book_genre_genre"
+                referencedTableName="genres"
+                referencedColumnNames="id"/>
+
+        <createTable tableName="book_publisher">
+            <column name="book_id" type="int"/>
+            <column name="publisher_id" type="int"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="book_publisher"
+                baseColumnNames="book_id"
+                constraintName="fk_book_publisher_book"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="book_publisher"
+                baseColumnNames="publisher_id"
+                constraintName="fk_book_publisher_publisher"
+                referencedTableName="publishers"
+                referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>
