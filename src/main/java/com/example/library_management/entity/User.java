@@ -4,14 +4,19 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
+@ToString(exclude = {"loans", "lossRecords", "role"}) // add other lazy fields too!
 @Data
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
+    @Column(name = "loss_count", nullable = false)
+    private int lossCount = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

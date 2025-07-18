@@ -4,7 +4,12 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="0" author="admin">
-
+    <changeSet id="insert_to_ROLES" author="MuratYigitMert">
+    <insert tableName="roles">
+        <column name="name" value="USER"> </column>
+    </insert>
+    <insert tableName="roles">
+        <column name="name" value="ADMIN"> </column>
+    </insert>
     </changeSet>
 </databaseChangeLog>
