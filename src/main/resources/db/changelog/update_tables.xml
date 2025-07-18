@@ -4,7 +4,10 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="0" author="admin">
-
+    <changeSet id="add_loss_count_to_users" author="MuratYigitMert">
+        <addColumn tableName="users">
+            <column name="loss_count" type="int" defaultValueNumeric="0" />
+        </addColumn>
+        <renameColumn tableName="loans" oldColumnName="is_returned" newColumnName="returned" columnDataType="boolean"/>
     </changeSet>
 </databaseChangeLog>

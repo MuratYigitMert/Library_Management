@@ -53,7 +53,7 @@ public class AuthServiceImpl implements IAuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
 
-        Role role = roleRepository.findByName("user")
+        Role role = roleRepository.findByName("USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Default role not found"));
         user.setRole(role);
 

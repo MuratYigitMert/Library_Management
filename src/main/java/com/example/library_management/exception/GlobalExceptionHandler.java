@@ -33,6 +33,10 @@ public class GlobalExceptionHandler {
         String message = extractConstraintMessage(ex.getMessage());
         return buildResponseEntity(HttpStatus.CONFLICT, message, request.getDescription(false));
     }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequest(BadRequestException ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getDescription(false));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions( WebRequest request) {

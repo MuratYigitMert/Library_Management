@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         String path = request.getServletPath();
-        if (path.startsWith("/api/auth")) {
+        if (path.startsWith("/api/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 log.info("User authenticated: {} with role {}", user.getUsername(), user.getRole().getName());
 
-                var authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
+                var authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole().getName()));
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(user, null, authorities);
 

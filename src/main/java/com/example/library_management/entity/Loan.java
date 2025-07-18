@@ -25,9 +25,10 @@ public class Loan {
 
     @Column(nullable = false)
     private LocalDateTime loanDate;
-
+    @Column(nullable = false)
     private LocalDateTime returnDate;
+    @Column(nullable = false)
+    private boolean returned;
 
-    private boolean isReturned = false;
 }
 
