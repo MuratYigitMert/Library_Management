@@ -3,6 +3,7 @@ package com.example.library_management.auth;
 import com.example.library_management.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -20,9 +21,13 @@ import java.util.concurrent.TimeUnit;
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
-    private final Key signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
-    private final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(signingKey).build();
-
+    private  Key signingKey;
+    private  JwtParser jwtParser;
+    @PostConstruct
+    public void init() {
+        signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        jwtParser = Jwts.parserBuilder().setSigningKey(signingKey).build();
+    }
     public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("username", user.getUsername());
