@@ -1,9 +1,7 @@
 package com.example.library_management.controller;
 
-import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.dto.LoanRequest;
 import com.example.library_management.dto.LoanResponse;
-import com.example.library_management.entity.Loan;
 import com.example.library_management.service.ILoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,29 +22,22 @@ public class LoanController {
 
     @PostMapping
     public ResponseEntity<LoanResponse> createLoan(@RequestBody LoanRequest request) {
-        Loan loan = loanService.addLoan(request);
-        LoanResponse response = DtoConverter.toDto(loan);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(loanService.addLoan(request), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LoanResponse> getLoanById(@PathVariable int id) {
-        Loan loan = loanService.findById(id);
-        return ResponseEntity.ok(DtoConverter.toDto(loan));
+    public ResponseEntity<LoanResponse> getLoanDtoById(@PathVariable int id) {
+        return ResponseEntity.ok(loanService.getLoanDtoById(id));
     }
 
     @GetMapping
     public ResponseEntity<Page<LoanResponse>> getAllLoans(Pageable pageable) {
-        Page<Loan> loans = loanService.findAll(pageable);
-        Page<LoanResponse> responses = loans.map(DtoConverter::toDto);
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(loanService.findAll(pageable));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<LoanResponse> updateLoan(@PathVariable int id, @RequestBody LoanRequest request) {
-        Loan updatedLoan = loanService.updateLoan(id, request);
-        LoanResponse response = DtoConverter.toDto(updatedLoan);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(loanService.updateLoan(id, request));
     }
 
     @DeleteMapping("/{id}")
@@ -57,26 +48,22 @@ public class LoanController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<LoanResponse>> getLoansByUser(@PathVariable int userId) {
-        List<Loan> loans = loanService.findByUserId(userId);
-        return ResponseEntity.ok(DtoConverter.toLoanDtoList(loans));
+        return ResponseEntity.ok(loanService.findByUserId(userId));
     }
 
     @GetMapping("/user/{userId}/active")
     public ResponseEntity<List<LoanResponse>> getActiveLoansByUser(@PathVariable int userId) {
-        List<Loan> loans = loanService.findActiveLoansByUser(userId);
-        return ResponseEntity.ok(DtoConverter.toLoanDtoList(loans));
+        return ResponseEntity.ok(loanService.findActiveLoansByUser(userId));
     }
 
     @PostMapping("/{id}/return")
     public ResponseEntity<LoanResponse> markLoanReturned(@PathVariable int id) {
-        Loan loan = loanService.markLoanReturned(id);
-        return ResponseEntity.ok(DtoConverter.toDto(loan));
+        return ResponseEntity.ok(loanService.markLoanReturned(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/lost")
     public ResponseEntity<List<LoanResponse>> getLostBooks() {
-        List<Loan> lostLoans = loanService.findLostBooks();
-        return ResponseEntity.ok(DtoConverter.toLoanDtoList(lostLoans));
+        return ResponseEntity.ok(loanService.findLostBooks());
     }
 }

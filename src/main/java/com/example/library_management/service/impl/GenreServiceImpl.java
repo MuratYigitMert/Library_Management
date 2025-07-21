@@ -1,6 +1,8 @@
 package com.example.library_management.service.impl;
 
+import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.dto.GenreRequest;
+import com.example.library_management.dto.GenreResponse;
 import com.example.library_management.entity.Genre;
 import com.example.library_management.exception.ResourceNotFoundException;
 import com.example.library_management.repo.GenreRepo;
@@ -17,31 +19,35 @@ public class GenreServiceImpl implements IGenreService {
 
     private final GenreRepo genreRepo;
 
-    @Override
-    public Page<Genre> findAll(Pageable pageable) {
-        return genreRepo.findAll(pageable);
-    }
-
-    @Override
-    public Genre findById(int id) {
+    private Genre findEntityById(int id) {
         return genreRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Genre not found with id: " + id));
     }
 
-    @Transactional
     @Override
-    public Genre addGenre(GenreRequest request) {
-        Genre genre = new Genre();
-        genre.setName(request.getName());
-        return genreRepo.save(genre);
+    public Page<GenreResponse> findAll(Pageable pageable) {
+        return genreRepo.findAll(pageable).map(DtoConverter::toDto);
+    }
+
+    @Override
+    public GenreResponse getById(int id) {
+        return DtoConverter.toDto(findEntityById(id));
     }
 
     @Transactional
     @Override
-    public Genre updateGenre(int id, GenreRequest request) {
-        Genre existing = findById(id);
-        existing.setName(request.getName());
-        return genreRepo.save(existing);
+    public GenreResponse addGenre(GenreRequest request) {
+        Genre genre = new Genre();
+        genre.setName(request.getName());
+        return DtoConverter.toDto(genreRepo.save(genre));
+    }
+
+    @Transactional
+    @Override
+    public GenreResponse updateGenre(int id, GenreRequest request) {
+        Genre genre = findEntityById(id);
+        genre.setName(request.getName());
+        return DtoConverter.toDto(genreRepo.save(genre));
     }
 
     @Transactional

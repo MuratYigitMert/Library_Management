@@ -11,4 +11,5 @@ public interface IAuthService  {
 
     @Transactional
     RegisterResponse register(UserRegisterRequest request);
+
 }

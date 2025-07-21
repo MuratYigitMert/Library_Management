@@ -2,7 +2,6 @@ package com.example.library_management.controller;
 
 import com.example.library_management.dto.AuthorRequest;
 import com.example.library_management.dto.AuthorResponse;
-import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.service.IAuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,20 +25,20 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponse> getAuthorById(@PathVariable int id) {
-        return ResponseEntity.ok(DtoConverter.toDto(authorService.findById(id)));
+        return ResponseEntity.ok(authorService.getById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<AuthorResponse> addAuthor(@RequestBody AuthorRequest request) {
-        AuthorResponse created = DtoConverter.toDto(authorService.addAuthor(request));
+        AuthorResponse created = authorService.addAuthor(request);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable int id, @RequestBody AuthorRequest request) {
-        AuthorResponse updated = DtoConverter.toDto(authorService.updateAuthor(id, request));
+        AuthorResponse updated = authorService.updateAuthor(id, request);
         return ResponseEntity.ok(updated);
     }
 
