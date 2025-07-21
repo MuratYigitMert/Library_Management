@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -17,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class JwtUtil {
-
-    private final String SECRET_KEY = "mySuperSecretKeyForJwtGeneration123456"; // must be 256-bit
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
     private final Key signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     private final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(signingKey).build();
 
