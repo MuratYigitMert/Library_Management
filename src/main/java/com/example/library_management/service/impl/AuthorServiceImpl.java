@@ -20,10 +20,15 @@ public class AuthorServiceImpl implements IAuthorService {
 
     private final AuthorRepo authorRepo;
 
-    @Override
-    public Author findById(int id) {
+    private Author findEntityById(int id) {
         return authorRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
+    }
+
+    @Override
+    public AuthorResponse getById(int id) {
+        Author author = findEntityById(id);
+        return DtoConverter.toDto(author);
     }
 
     @Override
@@ -33,18 +38,20 @@ public class AuthorServiceImpl implements IAuthorService {
 
     @Transactional
     @Override
-    public Author addAuthor(AuthorRequest request) {
+    public AuthorResponse addAuthor(AuthorRequest request) {
         Author author = new Author();
         author.setName(request.getName());
-        return authorRepo.save(author);
+        Author saved = authorRepo.save(author);
+        return DtoConverter.toDto(saved);
     }
 
     @Transactional
     @Override
-    public Author updateAuthor(int id, AuthorRequest request) {
-        Author author = findById(id);
+    public AuthorResponse updateAuthor(int id, AuthorRequest request) {
+        Author author = findEntityById(id);
         author.setName(request.getName());
-        return authorRepo.save(author);
+        Author updated = authorRepo.save(author);
+        return DtoConverter.toDto(updated);
     }
 
     @Transactional

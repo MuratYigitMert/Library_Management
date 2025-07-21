@@ -1,10 +1,8 @@
 package com.example.library_management.controller;
 
-import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.dto.UserRequest;
 import com.example.library_management.dto.UserResponse;
 import com.example.library_management.dto.UserRoleUpdateRequest;
-import com.example.library_management.entity.User;
 import com.example.library_management.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,29 +28,25 @@ public class UserController {
         userService.updateUserRole(userId, request.getRoleName());
         return ResponseEntity.ok("User role updated successfully.");
     }
+
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
-        Page<User> users = userService.findAll(pageable);
-        Page<UserResponse> responses= users.map(DtoConverter::toDto);
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(userService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
-        User user = userService.findById(id);
-        return ResponseEntity.ok(DtoConverter.toDto(user));
+        return ResponseEntity.ok(userService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> addUser(@RequestBody UserRequest request) {
-        User created = userService.createUser(request);
-        return new ResponseEntity<>(DtoConverter.toDto(created), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable int id, @RequestBody UserRequest request) {
-        User updated = userService.updateUser(id, request);
-        return ResponseEntity.ok(DtoConverter.toDto(updated));
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
     @DeleteMapping("/{id}")

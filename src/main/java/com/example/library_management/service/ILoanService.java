@@ -1,6 +1,7 @@
 package com.example.library_management.service;
 
 import com.example.library_management.dto.LoanRequest;
+import com.example.library_management.dto.LoanResponse;
 import com.example.library_management.entity.Loan;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -8,39 +9,37 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-
 public interface ILoanService {
 
-    Loan findById(int id);
+    LoanResponse addLoan(LoanRequest request);
 
-    Page<Loan> getAllLoans(Pageable pageable);
+    LoanResponse borrowBook(LoanRequest request);
 
-    List<Loan> getLoanHistoryForUser(int userId);
-
-    List<Loan> getActiveLoansForUser(int userId);
-
-
-    Loan borrowBook(LoanRequest request);
-
-    Loan returnBook(int loanId);
-
-    List<Loan> getOverdueLoans();
+    LoanResponse returnBook(int loanId);
 
     @Transactional
-    Loan addLoan(LoanRequest request);
-
-    Loan updateLoan(int id, LoanRequest request);
+    LoanResponse updateLoan(int id, LoanRequest request);
 
     void deleteLoan(int id);
 
-    List<Loan> findByUserId(int userId);
-
-    List<Loan> findActiveLoansByUser(int userId);
-
+    Loan findById(int id);
+    LoanResponse getLoanDtoById(int id);
     @Transactional
-    Loan markLoanReturned(int id);
+    LoanResponse markLoanReturned(int id);
 
-    List<Loan> findLostBooks();
+    Page<LoanResponse> getAllLoans(Pageable pageable);
 
-    Page<Loan> findAll(Pageable pageable);
+    Page<LoanResponse> findAll(Pageable pageable);
+
+    List<LoanResponse> getLoanHistoryForUser(int userId);
+
+    List<LoanResponse> getActiveLoansForUser(int userId);
+
+    List<LoanResponse> getOverdueLoans();
+
+    List<LoanResponse> findByUserId(int userId);
+
+    List<LoanResponse> findActiveLoansByUser(int userId);
+
+    List<LoanResponse> findLostBooks();
 }

@@ -1,6 +1,8 @@
 package com.example.library_management.service.impl;
 
+import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.dto.UserRequest;
+import com.example.library_management.dto.UserResponse;
 import com.example.library_management.entity.Role;
 import com.example.library_management.entity.User;
 import com.example.library_management.exception.ResourceNotFoundException;
@@ -12,28 +14,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public User findById(int id) {
+    private User findEntityById(int id) {
         return userRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
-        return userRepo.findAll(pageable);
+    public UserResponse getById(int id) {
+        return DtoConverter.toDto(findEntityById(id));
     }
 
     @Override
-    public User createUser(UserRequest request) {
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepo.findAll(pageable).map(DtoConverter::toDto);
+    }
+
+    @Transactional
+    @Override
+    public UserResponse createUser(UserRequest request) {
         Role role = roleRepo.findById(request.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
@@ -43,12 +50,13 @@ public class UserServiceImpl implements IUserService {
         user.setEmail(request.getEmail());
         user.setRole(role);
 
-        return userRepo.save(user);
+        return DtoConverter.toDto(userRepo.save(user));
     }
 
+    @Transactional
     @Override
-    public User updateUser(int id, UserRequest request) {
-        User existing = findById(id);
+    public UserResponse updateUser(int id, UserRequest request) {
+        User existing = findEntityById(id);
         Role role = roleRepo.findById(request.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
@@ -57,9 +65,10 @@ public class UserServiceImpl implements IUserService {
         existing.setEmail(request.getEmail());
         existing.setRole(role);
 
-        return userRepo.save(existing);
+        return DtoConverter.toDto(userRepo.save(existing));
     }
 
+    @Transactional
     @Override
     public void deleteUser(int id) {
         if (!userRepo.existsById(id)) {
@@ -67,13 +76,14 @@ public class UserServiceImpl implements IUserService {
         }
         userRepo.deleteById(id);
     }
+
+    @Transactional
     @Override
-    public User updateUserRole(int userId, String roleName) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    public void updateUserRole(int userId, String roleName) {
+        User user = findEntityById(userId);
         Role role = roleRepo.findByName(roleName.toLowerCase())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + roleName));
         user.setRole(role);
-        return userRepo.save(user);
+        userRepo.save(user);
     }
 }

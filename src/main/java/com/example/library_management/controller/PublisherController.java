@@ -1,9 +1,7 @@
 package com.example.library_management.controller;
 
-import com.example.library_management.dto.DtoConverter;
 import com.example.library_management.dto.PublisherRequest;
 import com.example.library_management.dto.PublisherResponse;
-import com.example.library_management.entity.Publisher;
 import com.example.library_management.service.IPublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,33 +16,29 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PublisherController {
 
+
     private final IPublisherService publisherService;
 
     @GetMapping
     public ResponseEntity<Page<PublisherResponse>> getAllPublishers(Pageable pageable) {
-        Page<Publisher> page = publisherService.findAll(pageable);
-        Page<PublisherResponse> dtoPage = page.map(DtoConverter::toDto);
-        return ResponseEntity.ok(dtoPage);
+        return ResponseEntity.ok(publisherService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PublisherResponse> getPublisherById(@PathVariable int id) {
-        Publisher publisher = publisherService.findById(id);
-        return ResponseEntity.ok(DtoConverter.toDto(publisher));
+        return ResponseEntity.ok(publisherService.getById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PublisherResponse> addPublisher(@RequestBody PublisherRequest request) {
-        Publisher created = publisherService.addPublisher(request);
-        return new ResponseEntity<>(DtoConverter.toDto(created), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.addPublisher(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PublisherResponse> updatePublisher(@PathVariable int id, @RequestBody PublisherRequest request) {
-        Publisher updated = publisherService.updatePublisher(id, request);
-        return ResponseEntity.ok(DtoConverter.toDto(updated));
+        return ResponseEntity.ok(publisherService.updatePublisher(id, request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

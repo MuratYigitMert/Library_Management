@@ -38,6 +38,7 @@ public class AuthServiceImpl implements IAuthService {
             }
 
             String token = jwtUtil.createToken(user);
+
             return new LoginResponse(token, user.getUsername(), user.getEmail());
 
         } catch (BadCredentialsException e) {
@@ -58,12 +59,10 @@ public class AuthServiceImpl implements IAuthService {
         user.setRole(role);
 
         User savedUser = userRepository.save(user);
-
         RegisterResponse response = new RegisterResponse();
         response.setUsername(savedUser.getUsername());
         response.setEmail(savedUser.getEmail());
         response.setRoleId(savedUser.getRole().getId());
-
         return response;
     }
 }
