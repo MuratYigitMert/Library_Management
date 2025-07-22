@@ -12,4 +12,250 @@
         <column name="name" value="ADMIN"> </column>
     </insert>
     </changeSet>
+    <changeSet id="insert_samples_for_all_tables" author="MuratYigitMert">
+        <insert tableName="users">
+            <column name="username" value="user"/>
+            <column name="email" value="user@library.com"/>
+            <column name="password" value="user123"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="email" value="admin@library.com"/>
+            <column name="password" value="admin123"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Science Fiction"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Fantasy"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="History"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="name" value="Adventure"/>
+        </insert>
+        <insert tableName="publishers">
+            <column name="name" value="Penguin Books"/>
+        </insert>
+        <insert tableName="publishers">
+            <column name="name" value="Lise Yayinevi"/>
+        </insert>
+        <insert tableName="publishers">
+            <column name="name" value="Kitap Yayinevi"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Isaac Asimov"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Orhan Pamuk"/>
+        </insert>
+        <insert tableName="authors">
+            <column name="name" value="Murat Yigit Mert"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="name" value="Foundation"/>
+        </insert>
+        <insert tableName="books">
+            <column name="name" value="Sineklerin Tanrisi"/>
+        </insert>
+        <insert tableName="books">
+            <column name="name" value="Alice Harikalar Diyarinda"/>
+        </insert>
+        <insert tableName="books">
+            <column name="name" value="Inception"/>
+        </insert>
+        <insert tableName="books">
+            <column name="name" value="Enigma"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="1"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="1"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="1"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="2"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="2"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="3"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="4"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+        <insert tableName="book_genre">
+            <column name="book_id" value="5"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="1"/>
+            <column name="publisher_id" value="1"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="1"/>
+            <column name="publisher_id" value="2"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="1"/>
+            <column name="publisher_id" value="3"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="2"/>
+            <column name="publisher_id" value="1"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="2"/>
+            <column name="publisher_id" value="2"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="3"/>
+            <column name="publisher_id" value="3"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="4"/>
+            <column name="publisher_id" value="2"/>
+        </insert>
+        <insert tableName="book_publisher">
+            <column name="book_id" value="5"/>
+            <column name="publisher_id" value="3"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="1"/>
+            <column name="author_id" value="1"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="1"/>
+            <column name="author_id" value="2"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="1"/>
+            <column name="author_id" value="3"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="2"/>
+            <column name="author_id" value="1"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="2"/>
+            <column name="author_id" value="2"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="3"/>
+            <column name="author_id" value="3"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="4"/>
+            <column name="author_id" value="2"/>
+        </insert>
+        <insert tableName="book_author">
+            <column name="book_id" value="5"/>
+            <column name="author_id" value="1"/>
+        </insert>
+
+
+
+    </changeSet>
+    <changeSet id="insert_sample_loans" author="MuratYigitMert">
+        <insert tableName="loans">
+            <column name="id" value="1"/>
+            <column name="book_id" value="1"/>
+            <column name="user_id" value="2"/>
+            <column name="loan_date" valueDate="2025-07-18T11:10:13.954827"/>
+            <column name="return_date" valueDate="2025-08-17T11:10:13.954827"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="2"/>
+            <column name="book_id" value="2"/>
+            <column name="user_id" value="2"/>
+            <column name="loan_date" valueDate="2025-07-18T11:10:32.824764"/>
+            <column name="return_date" valueDate="2025-08-17T11:10:32.824764"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="3"/>
+            <column name="book_id" value="3"/>
+            <column name="user_id" value="2"/>
+            <column name="loan_date" valueDate="2025-07-18T11:10:40.718037"/>
+            <column name="return_date" valueDate="2025-08-17T11:10:40.718037"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="4"/>
+            <column name="book_id" value="2"/>
+            <column name="user_id" value="1"/>
+            <column name="loan_date" valueDate="2025-06-25T11:12:26.269"/>
+            <column name="return_date" valueDate="2025-08-17T11:12:26.269176"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="5"/>
+            <column name="book_id" value="2"/>
+            <column name="user_id" value="1"/>
+            <column name="loan_date" valueDate="2024-09-16T00:15:13.350"/>
+            <column name="return_date" valueDate="2024-10-16T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="6"/>
+            <column name="book_id" value="3"/>
+            <column name="user_id" value="1"/>
+            <column name="loan_date" valueDate="2025-06-25T00:15:13.350"/>
+            <column name="return_date" valueDate="2025-07-25T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="7"/>
+            <column name="book_id" value="3"/>
+            <column name="user_id" value="3"/>
+            <column name="loan_date" valueDate="2024-06-25T00:15:13.350"/>
+            <column name="return_date" valueDate="2024-07-25T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="8"/>
+            <column name="book_id" value="2"/>
+            <column name="user_id" value="3"/>
+            <column name="loan_date" valueDate="2025-06-25T00:15:13.350"/>
+            <column name="return_date" valueDate="2025-07-25T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="10"/>
+            <column name="book_id" value="1"/>
+            <column name="user_id" value="5"/>
+            <column name="loan_date" valueDate="2024-06-25T00:15:13.350"/>
+            <column name="return_date" valueDate="2024-07-25T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+        <insert tableName="loans">
+            <column name="id" value="11"/>
+            <column name="book_id" value="2"/>
+            <column name="user_id" value="5"/>
+            <column name="loan_date" valueDate="2024-08-25T00:15:13.350"/>
+            <column name="return_date" valueDate="2024-09-09T00:15:13.350"/>
+            <column name="is_returned" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+
+
+
+
 </databaseChangeLog>
